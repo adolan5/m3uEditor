@@ -14,6 +14,8 @@ class Editor {
     Editor();
     // String constructor
     Editor(std::string path);
+    // dtor closes directories if they're open
+    ~Editor();
 
     // Music root path getter
     inline std::string getMusicRoot() { return musicRoot; }
