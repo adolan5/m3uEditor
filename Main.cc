@@ -3,6 +3,7 @@
 #include <windows.h>
 #include <iostream>
 #include <string>
+#include <cctype>
 
 using namespace std;
 
@@ -34,10 +35,21 @@ int MainClass::initialize() {
 }
 
 void MainClass::mainMenu() {
+  char choice;
   system("cls");
   cout << "Music library root path: ";
   SetConsoleTextAttribute(getStdOut(), 0x1A);
   cout << plEditor.getMusicRoot() << '\n';
+  SetConsoleTextAttribute(stdOutHandle, csbi.wAttributes);
+  while(1) {
+    cout << "(q)uit, (n)ew: ";
+    cin.get(choice);
+    if(tolower(choice) == 'q') { return; }
+    if(tolower(choice) == 'n') {
+      cout << "Coming soon!\n";
+      return;
+    }
+  }
 }
 
 void MainClass::usage() {
@@ -53,5 +65,6 @@ int main(int argc, char *argv[]) {
   MainClass entryPoint(argv[1]);
   if(entryPoint.initialize() == EXIT_FAILURE) { return EXIT_FAILURE; }
   entryPoint.mainMenu();
+  cout << "Bye!\n";
   return 0;
 }
