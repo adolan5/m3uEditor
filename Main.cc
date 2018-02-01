@@ -6,7 +6,9 @@
 
 using namespace std;
 
-MainClass::MainClass() {
+MainClass::MainClass(): MainClass("") { }
+
+MainClass::MainClass(string path): plEditor(path) {
   stdInHandle = GetStdHandle(STD_INPUT_HANDLE);
   stdOutHandle = GetStdHandle(STD_OUTPUT_HANDLE);
   // Remember how colors were when we started
@@ -20,42 +22,36 @@ MainClass::~MainClass() {
   SetConsoleTextAttribute(stdOutHandle, csbi.wAttributes);
 }
 
-string MainClass::getMusicPath() {
-  string passedPath;
-  cout << "Enter the path of your root music directory: ";
-  cin >> passedPath;
-  return resolvePath(passedPath);
-}
-
-string MainClass::resolvePath(string path) {
-  DWORD retval = 0; // Indicates success
-  char buffer[260]; // 260 is stdlib.h's MAX_PATH
-  retval = GetFullPathName(path.c_str(), 260, buffer, NULL);
-  // On failure, return empty string
-  if(retval == 0) {
-    return "";
-  }
-  else {
-    return string(buffer);
-  }
-}
-
-void MainClass::mainMenu() {
-}
-
-int main() {
-  MainClass entryPoint;
-  Editor myEditor(entryPoint.getMusicPath());
+int MainClass::initialize() {
   try {
-    myEditor.openRoot();
+    plEditor.openRoot();
   } catch(string error) {
-    SetConsoleTextAttribute(entryPoint.getStdOut(), 0x0C);
+    SetConsoleTextAttribute(getStdOut(), 0x0C);
     cout << error + '\n';
     return EXIT_FAILURE;
   }
+  return 0;
+}
+
+void MainClass::mainMenu() {
   system("cls");
   cout << "Music library root path: ";
-  SetConsoleTextAttribute(entryPoint.getStdOut(), 0x1A);
-  cout << myEditor.getMusicRoot() << '\n';
+  SetConsoleTextAttribute(getStdOut(), 0x1A);
+  cout << plEditor.getMusicRoot() << '\n';
+}
+
+void MainClass::usage() {
+  cout << "USAGE: m3uEditor.exe Root-Music-Path\n"
+    << "where Root-Music-Path is the path to the root of your music directory.\n";
+}
+
+int main(int argc, char *argv[]) {
+  if(argc < 2) {
+    MainClass::usage();
+    return 0;
+  }
+  MainClass entryPoint(argv[1]);
+  if(entryPoint.initialize() == EXIT_FAILURE) { return EXIT_FAILURE; }
+  entryPoint.mainMenu();
   return 0;
 }

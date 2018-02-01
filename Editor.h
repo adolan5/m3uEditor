@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <dirent.h>
+#include <windows.h>
 
 /**
  * This class will be responsible for most editing options.
@@ -27,6 +28,9 @@ class Editor {
     std::string musicRoot;
     // The directory that is the root of the music dir
     DIR *root;
+
+    // Resolves the full path of a directory or file
+    std::string resolvePath(std::string path);
 };
 
 #endif
