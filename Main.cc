@@ -7,8 +7,8 @@
 
 using namespace std;
 
-MainClass::MainClass(): MainClass("") { }
-
+// Sets the path of the playlist editor instance and
+// sets up screen info
 MainClass::MainClass(string path): plEditor(path) {
   stdInHandle = GetStdHandle(STD_INPUT_HANDLE);
   stdOutHandle = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -16,6 +16,7 @@ MainClass::MainClass(string path): plEditor(path) {
   GetConsoleScreenBufferInfo(stdOutHandle, &csbi);
 }
 
+// dtor cleans up and sets colors to normal
 MainClass::~MainClass() {
   // Ditch any extra input in the buffer
   FlushConsoleInputBuffer(stdInHandle);
@@ -23,9 +24,10 @@ MainClass::~MainClass() {
   SetConsoleTextAttribute(stdOutHandle, csbi.wAttributes);
 }
 
+// Verifies that the root music directory is valid
 int MainClass::initialize() {
   try {
-    plEditor.openRoot();
+    plEditor.openRoot(); // Verify that the directory is valid
   } catch(string error) {
     SetConsoleTextAttribute(getStdOut(), 0x0C);
     cout << error + '\n';
@@ -34,13 +36,14 @@ int MainClass::initialize() {
   return 0;
 }
 
+// Initial menu that is shown after root directory is validated/opened
 void MainClass::mainMenu() {
   char choice;
   system("cls");
   cout << "Music library root path: ";
-  SetConsoleTextAttribute(getStdOut(), 0x1A);
+  SetConsoleTextAttribute(getStdOut(), 0x1A); // Print the directory in blue
   cout << plEditor.getMusicRoot() << '\n';
-  SetConsoleTextAttribute(stdOutHandle, csbi.wAttributes);
+  SetConsoleTextAttribute(stdOutHandle, csbi.wAttributes); // Reset color
   while(1) {
     cout << "(q)uit, (n)ew: ";
     cin.get(choice);
@@ -58,11 +61,12 @@ void MainClass::usage() {
 }
 
 int main(int argc, char *argv[]) {
-  if(argc < 2) {
+  if(argc < 2) { // Need to pass path to root music directory
     MainClass::usage();
     return 0;
   }
-  MainClass entryPoint(argv[1]);
+  MainClass entryPoint(argv[1]); // Construct based on passed path
+  // If the directory isn't valid, exit
   if(entryPoint.initialize() == EXIT_FAILURE) { return EXIT_FAILURE; }
   entryPoint.mainMenu();
   cout << "Bye!\n";

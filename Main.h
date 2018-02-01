@@ -11,7 +11,7 @@
 class MainClass {
   public:
     // Default ctor sets root path to ""
-    MainClass();
+    inline MainClass(): MainClass("") { }
     // String ctor sets up music root path and stdin stuff
     MainClass(std::string path);
     //dtor cleans up (resets terminal to how it was)
