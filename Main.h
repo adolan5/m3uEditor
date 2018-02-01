@@ -23,6 +23,9 @@ class MainClass {
     // Get the user's music path
     std::string getMusicPath();
 
+    // Display root menu
+    void mainMenu();
+
   private:
     // Standard input device
     HANDLE stdInHandle;
@@ -30,6 +33,9 @@ class MainClass {
     HANDLE stdOutHandle;
     // Storage for the way the terminal is at start
     CONSOLE_SCREEN_BUFFER_INFO csbi;
+
+    // Resolves the full path of a directory or file
+    std::string resolvePath(std::string path);
 };
 
 #endif

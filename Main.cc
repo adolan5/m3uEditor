@@ -24,7 +24,23 @@ string MainClass::getMusicPath() {
   string passedPath;
   cout << "Enter the path of your root music directory: ";
   cin >> passedPath;
-  return passedPath;
+  return resolvePath(passedPath);
+}
+
+string MainClass::resolvePath(string path) {
+  DWORD retval = 0; // Indicates success
+  char buffer[260]; // 260 is stdlib.h's MAX_PATH
+  retval = GetFullPathName(path.c_str(), 260, buffer, NULL);
+  // On failure, return empty string
+  if(retval == 0) {
+    return "";
+  }
+  else {
+    return string(buffer);
+  }
+}
+
+void MainClass::mainMenu() {
 }
 
 int main() {
