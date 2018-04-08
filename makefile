@@ -6,7 +6,7 @@ INCLUDE=-I include
 # in .\catch
 TEST_INCLUDE=-I catch
 OBJECTS=build\Editor.o build\Main.o build\Playlist.o
-TEST_OBJS=build\test\Runner.o
+TEST_OBJS=build\test\Runner.o build\test\PlaylistTest.o
 EXE=bin\m3uEditor.exe
 TEST_EXE=bin\testRunner.exe
 
@@ -37,3 +37,7 @@ $(TEST_EXE) test: $(EXE) $(TEST_OBJS)
 # Test runner object
 build\test\Runner.o: src\test\Runner.cc
 	$(CC) $(TEST_INCLUDE) $(C_FLAGS) -c -o $@ $<
+
+# Playlist test cases
+build\test\PlaylistTest.o: src\test\PlaylistTest.cc
+	$(CC) $(INCLUDE) $(TEST_INCLUDE) $(C_FLAGS) -c -o $@ $<
