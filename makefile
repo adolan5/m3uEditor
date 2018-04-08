@@ -1,15 +1,20 @@
 CC=g++
 C_FLAGS=-Wall -Wfatal-errors -Wextra -std=c++11
-EXE=m3uEditor.exe
+INCLUDE=-I include
+OBJECTS=build\Editor.o build\Main.o
+EXE=bin\m3uEditor.exe
 
-m3uEditor.exe: Editor.o Main.o Main.cc
-	$(CC) $(C_FLAGS) Editor.o main.cc -o $(EXE)
+# Main entry point
+$(EXE): $(OBJECTS)
+	$(CC) $(INCLUDE) $(C_FLAGS) build\\*.o -o $(EXE)
 
-Editor.o: Editor.cc Editor.h
-	$(CC) $(C_FLAGS) -c Editor.cc
+# Editor object
+build\Editor.o: src\Editor.cc include\Editor.h
+	$(CC) $(INCLUDE) $(C_FLAGS) -c -o $@ $<
 
-Main.o: Main.cc Main.h
-	$(CC) $(C_FLAGS) -c Main.cc
+# Main object
+build\Main.o: src\Main.cc include\Main.h
+	$(CC) $(INCLUDE) $(C_FLAGS) -c -o $@ $<
 
 clean:
-	del $(EXE) *.o
+	del /Q $(EXE) build\*
