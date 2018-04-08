@@ -1,7 +1,6 @@
 #ifndef EDITOR_INCLUDED
 #define EDITOR_INCLUDED
 
-#include <vector>
 #include <string>
 #include <dirent.h>
 #include <windows.h>
