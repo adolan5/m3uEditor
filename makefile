@@ -10,8 +10,13 @@ TEST_OBJS=build\test\Runner.o build\test\PlaylistTest.o
 EXE=bin\m3uEditor.exe
 TEST_EXE=bin\testRunner.exe
 
-# Main entry point
-$(EXE): $(OBJECTS)
+# Main entry point, run tests by default on build
+$(EXE): test
+	$(CC) $(INCLUDE) $(C_FLAGS) $(OBJECTS) -o $(EXE)
+
+# Main entry point, but skip tests
+.PHONY: skip
+skip: $(OBJECTS)
 	$(CC) $(INCLUDE) $(C_FLAGS) $(OBJECTS) -o $(EXE)
 
 # Editor object
@@ -26,13 +31,16 @@ build\Playlist.o: src\Playlist.cc include\Playlist.h
 build\Main.o: src\Main.cc include\Main.h
 	$(CC) $(INCLUDE) $(C_FLAGS) -c -o $@ $<
 
+.PHONY: clean
 clean:
 	del /Q /S $(EXE) $(TEST_EXE) build\*
 
 ### Tests Section ###
 # Test entry point
-$(TEST_EXE) test: $(EXE) $(TEST_OBJS)
+.PHONY: test
+$(TEST_EXE) test: $(OBJECTS) $(TEST_OBJS)
 	$(CC) $(TEST_INCLUDE) $(C_FLAGS) $(TEST_OBJS) -o $(TEST_EXE)
+	$(TEST_EXE)
 
 # Test runner object
 build\test\Runner.o: src\test\Runner.cc
