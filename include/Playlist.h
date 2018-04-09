@@ -16,7 +16,13 @@ class Playlist {
     Playlist();
 
     // Add a song to the playlist, by default to the end of the playlist
-    void addNewSong(std::string songPath);
+    void addNewSong(std::string songName);
+
+    // Return the number of songs in this playlist
+    int getNumSongs();
+
+    // Tell if a passed song is contained in the playlist
+    bool contains(std::string songName);
 
   private:
     // The songs that are in this playlist
